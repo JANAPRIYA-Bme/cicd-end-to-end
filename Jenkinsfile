@@ -27,16 +27,23 @@ pipeline {
             }
         }
 
-        stage('Push the artifacts'){
-           steps{
-                script{
-                    sh '''
-                    echo 'Push to Repo'
-                    docker push Manijana123/cicd-e2e:${BUILD_NUMBER}
-                    '''
-                }
-            }
+        stage('Push the artifacts') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'docker-hub-creds',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASS'
+            )
+        ]) {
+            sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            docker push ${DOCKER_USER}/cicd-e2e:${BUILD_NUMBER}
+            docker logout
+            '''
         }
+    }
+}
         
         stage('Checkout K8S manifest SCM'){
             steps {
@@ -57,7 +64,7 @@ pipeline {
                         git add deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push https://github.com/JANAPRIYA-Bme/cicd-demo-manifests-repo.git HEAD:main
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/JANAPRIYA-Bme/cicd-demo-manifests-repo.git HEAD:main
                         '''                        
                     }
                 }
