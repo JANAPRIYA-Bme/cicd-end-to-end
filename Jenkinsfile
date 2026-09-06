@@ -88,7 +88,7 @@ pipeline {
                             git add deploy.yaml
                             git commit -m "Updated deploy yaml | Jenkins Pipeline" || true
 
-                            git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/JANAPRIYA-Bme/cicd-demo-manifests-repo.git HEAD:main
+                            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/JANAPRIYA-Bme/cicd-demo-manifests-repo.git HEAD:main
                         '''
                     }
                 }
