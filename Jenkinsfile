@@ -10,7 +10,7 @@ pipeline {
         
         stage('Checkout'){
            steps {
-                git credentialsId: 'docker-hub-creds', 
+                git credentialsId: 'github-creds', 
                 url: 'https://github.com/JANAPRIYA-Bme/cicd-end-to-end',
                 branch: 'main'
            }
@@ -40,7 +40,7 @@ pipeline {
         
         stage('Checkout K8S manifest SCM'){
             steps {
-                git credentialsId: 'docker-hub-creds', 
+                git credentialsId: 'github-creds', 
                 url: 'https://github.com/JANAPRIYA-Bme/cicd-demo-manifests-repo.git',
                 branch: 'main'
             }
